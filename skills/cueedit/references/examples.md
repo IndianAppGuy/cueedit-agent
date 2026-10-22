@@ -21,19 +21,23 @@ These were run on 22 Oct 2026 against CueEdit's production API, on our own Insta
 >
 > If you approve, I'll send the DM to that one person, plus the public reply if you want it. This post will keep getting LINK comments, so I can also set up an Auto DM rule. That needs your approval too.
 
-## 2. Schedule a trial reel, check it, cancel it (Claude Code, approved in the prompt)
+## 2. Draft replies to every unanswered comment (Claude Code, nothing posted)
 
 **Prompt**
-> Test run on my own account @sanskarr.tiwari. Step 1: schedule this trial reel for 2026-10-29 at 23:00 IST: https://…/hero-wwt.mp4 with caption 'CueEdit agent skill test, will be cancelled'. Step 2: confirm it shows in scheduled posts. Step 3: cancel it and confirm it is gone. I approve all three steps exactly as written.
+> On my Instagram @sanskarr.tiwari, go through my last 5 posts, find every comment I haven't replied to yet, and draft a short friendly public reply for each. Show them as a numbered list. Do not post anything.
 
-**Calls:** `schedule --video-url … --at 2026-10-29T23:00:00+05:30 --trial` → `scheduled` → `cancel <id>` → `scheduled`
+**Calls:** `posts --limit 5` → `comments <media_id> --unhandled` ×5
 
 **Output**
-> 1. **Scheduled:** trial reel for 2026-10-29 at 23:00 IST (17:30 UTC). Post ID `f9d6ba0c-…`.
-> 2. **Confirmed scheduled:** it appeared in the scheduled posts list with status `scheduled`.
-> 3. **Cancelled and gone:** the cancel returned `{"ok": true}`, and the post is no longer in the list.
+> I checked your last 5 posts on @sanskarr.tiwari and found 3 comments you haven't replied to. Two posts have no comments. All 3 comments just say "Link", so they're people asking for the guide or resource.
 >
-> Nothing will publish. Your other connected account was not touched.
+> 1. **@a_follower** on "My ads stopped. Nothing looked broken." (17 hours ago): Thanks for asking! Sending you the link in DMs now 🙌
+> 2. **@a_follower_2** on "I answered 30 Quora questions in one day." (21 hours ago): Here you go! Check your DMs for the link 🙌
+> 3. **@a_follower_2** on "138 people commented LINK on one reel…" (2 hours ago): Sent! It's in your DMs. Hope the guides help 🙌
+>
+> No DMs have gone to these people yet, and these replies say the link is in their DMs. So send the links first, or I can change the replies to say something like "DMing you shortly." All 3 comments are recent enough for a DM.
+>
+> Nothing has been posted.
 
 ## 3. Create a comment-to-DM rule, then pause it (Claude Code, approved in the prompt)
 

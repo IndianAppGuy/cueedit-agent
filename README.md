@@ -2,7 +2,7 @@
 
 # CueEdit agent skill
 
-**Let your AI agent run your Instagram: post reels, reply to comments, DM everyone who comments LINK.** Facebook Pages too.
+**Let your AI agent run your Instagram: reply to comments, DM everyone who comments LINK, and run comment-to-DM rules.** Facebook Pages too (limited, see below).
 
 Most social media tools for agents only post. CueEdit also handles what happens after the post: comment replies, comment-to-DM automation (the ManyChat "comment LINK and I'll DM you" flow), and one-off DMs to commenters, through Meta's official Instagram and Facebook APIs.
 
@@ -29,21 +29,23 @@ No CueEdit account yet? [Sign up free](https://www.cueedit.io/signup?ref=github)
 export CUEEDIT_API_KEY=ce_live_...
 ```
 
-Reads work on the free plan. Replies, DMs, scheduling and Auto DM rules need CueEdit Pro.
+Reads work on the free plan. Replies, DMs and Auto DM rules need CueEdit Pro.
+
+**Current limits (honest):** reel scheduling is not supported yet (scheduled reels can't publish until a Meta publishing permission is approved), so the skill doesn't offer it. Facebook Page replies and Messenger DMs are waiting on Meta App Review and only work for accounts Meta has approved for testing. Instagram replies, DMs and Auto DM rules are fully approved by Meta.
 
 ## What you can ask
 
 - "Set up an auto DM on my latest reel: anyone who comments LINK gets my guide link."
 - "Find everyone who commented LINK on yesterday's reel and DM them the link. Show me first."
 - "Reply to every unanswered comment on my last 3 posts. Keep it short and friendly."
-- "Schedule this video as a trial reel tomorrow at 7pm IST: https://…/reel.mp4"
+- "Pause my LINK auto DM on last week's reel."
 - "Which of my Facebook Page posts have comments I haven't answered?"
 
 Real runs of these, on our own accounts, are in [skills/cueedit/references/examples.md](skills/cueedit/references/examples.md).
 
 ## Safety built into the skill
 
-- The agent shows the exact message, the target and the count, and waits for your yes before any reply, DM, schedule or rule change.
+- The agent shows the exact message, the target and the count, and waits for your yes before any reply, DM or rule change.
 - At most ~50 DMs containing a link per Instagram account per day, and the batch stops at the first refusal. Instagram flags accounts that blast link DMs.
 - DMs only go to people who commented, one per comment, inside Meta's 7-day private-reply window. The server enforces this too.
 - The API key is never printed or pasted into chat.
@@ -54,7 +56,6 @@ Real runs of these, on our own accounts, are in [skills/cueedit/references/examp
 |---|---|
 | `list_accounts`, `list_posts`, `list_comments` | `list_facebook_pages`, `list_facebook_posts`, `list_facebook_comments` |
 | `reply_to_comment`, `send_dm` | `reply_to_facebook_comment`, `send_facebook_dm` |
-| `schedule_reel`, `list_scheduled_posts`, `cancel_scheduled_post` | |
 | `create_autodm_rule`, `list_autodm_rules`, `set_autodm_rule_status` | |
 
 No MCP? The skill ships a zero-dependency CLI (`skills/cueedit/scripts/cueedit.mjs`, Node 18+) that calls the same REST API: `node scripts/cueedit.mjs help`.

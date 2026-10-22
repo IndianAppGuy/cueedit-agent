@@ -1,6 +1,6 @@
 ---
 name: cueedit
-description: Run Instagram and Facebook Pages from the agent with CueEdit (cueedit.io). Use when the user wants to schedule an Instagram reel or trial reel, reply to Instagram or Facebook comments, DM everyone who commented a keyword like "LINK" on a reel, set up a comment-to-DM auto reply (ManyChat-style keyword automation), pause or resume an Auto DM rule, find unanswered comments, or message a Facebook Page commenter on Messenger. Triggers on "instagram", "reel", "auto dm", "comment reply", "manychat", "dm everyone who comments", "comment to dm", "facebook page comments".
+description: Run Instagram and Facebook Pages from the agent with CueEdit (cueedit.io). Use when the user wants to reply to Instagram or Facebook comments, DM everyone who commented a keyword like "LINK" on a reel, set up a comment-to-DM auto reply (ManyChat-style keyword automation), pause or resume an Auto DM rule, find unanswered comments, or message a Facebook Page commenter on Messenger. Triggers on "instagram", "reel", "auto dm", "comment reply", "manychat", "dm everyone who comments", "comment to dm", "facebook page comments".
 license: MIT
 compatibility: Needs network access to https://www.cueedit.io. Works through the CueEdit MCP server (OAuth or API key) or plain HTTPS with the CUEEDIT_API_KEY environment variable and Node 18+.
 metadata: {"author":"IndianAppGuy","version":"1.0.0","homepage":"https://www.cueedit.io/?ref=skill","openclaw":{"emoji":"📩","homepage":"https://www.cueedit.io/?ref=openclaw","primaryEnv":"CUEEDIT_API_KEY","requires":{"bins":["node"],"env":["CUEEDIT_API_KEY"]},"envVars":[{"name":"CUEEDIT_API_KEY","required":true,"description":"CueEdit API key (ce_live_...) from cueedit.io Settings > API keys"}]},"hermes":{"tags":["instagram","facebook","social-media","auto-dm"],"category":"social-media"}}
@@ -15,13 +15,12 @@ required_environment_variables:
 
 CueEdit connects to the user's own Instagram professional account and Facebook Pages through Meta's official APIs. With it you can:
 
-- schedule reels and trial reels on Instagram
 - read posts and comments, and find the ones nobody has answered yet
 - reply to comments in public
 - DM the person who commented (Instagram private reply / Facebook Messenger private reply)
 - create Auto DM rules: "when someone comments LINK on this reel, DM them the link", then pause or resume them
 
-Writes (reply, DM, schedule, rules) need a CueEdit Pro plan. Reads work on the free plan.
+Writes (reply, DM, rules) need a CueEdit Pro plan. Reads work on the free plan.
 
 ## 1. Connect (pick ONE path)
 
@@ -51,7 +50,6 @@ Every MCP tool below has a CLI twin, so the workflows in section 4 work on both 
 | `list_comments` / `list_facebook_comments` | `comments <media_id> --unhandled [--keyword LINK --all-pages]` / `fb-comments <post_id> …` |
 | `reply_to_comment` / `reply_to_facebook_comment` | `reply <comment_id> --text "…"` / `fb-reply …` |
 | `send_dm` / `send_facebook_dm` | `dm <comment_id> --text "…"` / `fb-dm …` |
-| `schedule_reel` / `list_scheduled_posts` / `cancel_scheduled_post` | `schedule --video-url … --at … [--trial]` / `scheduled` / `cancel <id>` |
 | `create_autodm_rule` / `list_autodm_rules` / `set_autodm_rule_status` | `rule-create --dm "…" --keywords LINK --media <id>` / `rules` / `rule-status <id> active\|paused` |
 
 Add `--account <id>` (Instagram) or `--page <id>` (Facebook) when several are connected. Run `node scripts/cueedit.mjs help` for every flag. The full endpoint list is in [references/api.md](references/api.md). Never print, log or echo the API key, and never ask the user to paste it into chat if they can set the env var themselves.
@@ -70,7 +68,7 @@ If both paths are available (an MCP connection AND `CUEEDIT_API_KEY`), they may 
 
 ## 3. Safety rules (non-negotiable)
 
-- **Show, then ask.** Before ANY reply, DM, schedule, cancel or rule change, show the user the exact text, the target (account, post, how many people), and the time if scheduling. Wait for an explicit "yes". A yes covers that one batch, not future ones.
+- **Show, then ask.** Before ANY reply, DM or rule change, show the user the exact text and the target (account, post, how many people). Wait for an explicit "yes". A yes covers that one batch, not future ones.
 - **Instagram link-DM limit.** Send at most ~50 DMs that contain a link per Instagram account per day from the agent, even though the API allows more. Instagram flags accounts that send many link DMs in a short burst. For bigger lists, do 50 today and offer to continue tomorrow, or set up an Auto DM rule (it sends as comments arrive, which Instagram treats as normal replies).
 - **Stop at the first refusal.** If any DM or reply fails (401, 402, 429, 502, or a Meta error such as "user cannot receive messages"), stop the batch, report what was sent and what failed, and ask before continuing. Only two errors may be skipped while you keep going: `already_dmed` (409) and `comment_too_old` (422).
 - **Pace writes.** Leave about 5 seconds between DMs in a batch.
@@ -78,13 +76,6 @@ If both paths are available (an MCP connection AND `CUEEDIT_API_KEY`), they may 
 - **Own accounts only.** Act only on accounts the signed-in user connected. Never test on a client's account.
 
 ## 4. Workflows
-
-### Schedule a reel
-Needs a public `https://` URL to an MP4 (a Google Drive or Dropbox share page will not work; ask for a direct file URL, e.g. from R2, S3 or a CDN).
-1. Ask for: video URL, caption, time (with timezone), public or `trial` (trial reels are shown to non-followers first).
-2. Show the summary: account, time in the user's timezone, caption, post type. Get a yes.
-3. Call `schedule_reel` with `scheduled_at` as ISO 8601 with offset (e.g. `2026-10-23T19:00:00+05:30`). It publishes within 5 minutes of that time.
-4. Confirm with `list_scheduled_posts`. To undo: `cancel_scheduled_post` (only before it starts publishing).
 
 ### "DM everyone who comments LINK" (Auto DM rule)
 1. `list_posts` and let the user pick the reel (or "all posts").
@@ -110,7 +101,10 @@ Needs a public `https://` URL to an MP4 (a Google Drive or Dropbox share page wi
 Find the comment with `list_comments`, show the DM, get a yes, `send_dm`. If it returns 422 `comment_too_old`, explain Meta's 7-day window; a public reply is still possible.
 
 ### Facebook Pages
-Same flows with `list_facebook_pages` → `list_facebook_posts` → `list_facebook_comments` → `reply_to_facebook_comment` / `send_facebook_dm` (the DM lands in the commenter's Messenger, one per comment, 7-day window). Auto DM rules and reel scheduling are Instagram only today.
+Facebook Page messaging is still waiting on Meta App Review, so Facebook replies and DMs only work for CueEdit accounts that Meta has approved for testing; if they fail with a permissions error, say that plainly. Same flows with `list_facebook_pages` → `list_facebook_posts` → `list_facebook_comments` → `reply_to_facebook_comment` / `send_facebook_dm` (the DM lands in the commenter's Messenger, one per comment, 7-day window). Auto DM rules are Instagram only today.
+
+### Not supported yet
+Reel scheduling: the server still lists `schedule_reel`, `list_scheduled_posts` and `cancel_scheduled_post`, but scheduled reels cannot publish today (a Meta publishing permission is pending). Do not use them; tell the user to post the reel in Instagram and come back for the comment and DM side.
 
 ## 5. Errors
 

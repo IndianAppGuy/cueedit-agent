@@ -14,8 +14,7 @@ Instagram
   comments <media_id> [--unhandled] [--keyword LINK] [--all-pages] [--limit 50]
   reply <comment_id> --text "…"              public reply (Pro)
   dm <comment_id> --text "…" [--force]       private reply DM to the commenter (Pro)
-  schedule --video-url URL --at ISO8601 [--caption "…"] [--trial] [--thumbnail-url URL]
-  scheduled [--status scheduled]             scheduled reels
+  scheduled [--status scheduled]             reels scheduled earlier (scheduling new reels is not supported yet)
   cancel <scheduled_post_id>                 cancel a scheduled reel
   rules                                      Auto DM rules
   rule-create --dm "…" [--keywords LINK,guide] [--any-comment] [--exact]
@@ -108,16 +107,8 @@ async function main() {
     case 'reply': r = await api('POST', `/comments/${need(a1, 'comment_id')}/reply`, { body: { text: need(flags.text, '--text'), account_id } }); break;
     case 'dm': r = await api('POST', `/comments/${need(a1, 'comment_id')}/dm`, { body: { text: need(flags.text, '--text'), account_id, force: flags.force ? true : undefined } }); break;
     case 'schedule':
-      r = await api('POST', '/scheduled-posts', {
-        body: {
-          video_url: need(flags['video-url'], '--video-url'),
-          scheduled_at: need(flags.at, '--at'),
-          caption: typeof flags.caption === 'string' ? flags.caption : undefined,
-          post_type: flags.trial ? 'trial' : 'public',
-          thumbnail_url: typeof flags['thumbnail-url'] === 'string' ? flags['thumbnail-url'] : undefined,
-          account_id,
-        },
-      });
+      // The API accepts schedules, but publishing fails until CueEdit's Meta app has instagram_business_content_publish again.
+      r = { ok: false, status: 501, data: { error: 'not_supported', message: 'Scheduling reels from the agent is not supported yet: scheduled reels cannot publish until a Meta publishing permission is approved. Post the reel in Instagram instead.' } };
       break;
     case 'scheduled': r = await api('GET', '/scheduled-posts', { query: { account_id, status: flags.status, from: flags.from, to: flags.to } }); break;
     case 'cancel': r = await api('DELETE', `/scheduled-posts/${need(a1, 'scheduled_post_id')}`); break;
