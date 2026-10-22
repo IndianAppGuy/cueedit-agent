@@ -33,6 +33,10 @@ Reads work on the free plan. Replies, DMs and Auto DM rules need CueEdit Pro.
 
 **Current limits (honest):** reel scheduling is not supported yet (scheduled reels can't publish until a Meta publishing permission is approved), so the skill doesn't offer it. Facebook Page replies and Messenger DMs are waiting on Meta App Review and only work for accounts Meta has approved for testing. Instagram replies, DMs and Auto DM rules are fully approved by Meta.
 
+## Step-by-step guide for your agent
+
+[Claude](https://www.cueedit.io/claude/instagram-auto-dm?ref=github) · [Claude Code](https://www.cueedit.io/claude-code/instagram-auto-dm?ref=github) · [ChatGPT](https://www.cueedit.io/chatgpt/instagram-auto-dm?ref=github) · [Codex](https://www.cueedit.io/codex/instagram-auto-dm?ref=github) · [Cursor](https://www.cueedit.io/cursor/instagram-auto-dm?ref=github) · [OpenClaw](https://www.cueedit.io/openclaw/instagram-auto-dm?ref=github) · [Hermes Agent](https://www.cueedit.io/hermes-agent/instagram-auto-dm?ref=github) · [Gemini CLI](https://www.cueedit.io/gemini/instagram-auto-dm?ref=github) · [all agents](https://www.cueedit.io/agents?ref=github)
+
 ## What you can ask
 
 - "Set up an auto DM on my latest reel: anyone who comments LINK gets my guide link."
