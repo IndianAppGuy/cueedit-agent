@@ -76,4 +76,4 @@ gemini-extension.json, GEMINI.md Gemini CLI extension
 server.json                      official MCP Registry entry
 ```
 
-Support: support@magicslides.app · Made by [IndianAppGuy](https://www.cueedit.io/?ref=github). MIT licensed.
+Support: [www.cueedit.io/support](https://www.cueedit.io/support) · Docs: this README · Made by IndianAppGuy. MIT licensed.
