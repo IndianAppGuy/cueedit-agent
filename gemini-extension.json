@@ -1,0 +1,9 @@
+{
+  "name": "cueedit",
+  "version": "1.0.0",
+  "description": "Let Gemini CLI run your Instagram and Facebook Pages: schedule reels, reply to comments, DM everyone who comments LINK, run comment-to-DM Auto DM rules.",
+  "mcpServers": {
+    "cueedit": { "httpUrl": "https://www.cueedit.io/api/mcp/mcp" }
+  },
+  "contextFileName": "GEMINI.md"
+}

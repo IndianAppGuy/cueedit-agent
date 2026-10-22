@@ -1,0 +1,13 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.IndianAppGuy/cueedit",
+  "title": "CueEdit",
+  "description": "Instagram + Facebook Pages: schedule reels, reply to comments, DM commenters, comment-to-DM rules.",
+  "websiteUrl": "https://www.cueedit.io/?ref=mcp-registry",
+  "repository": { "url": "https://github.com/IndianAppGuy/cueedit-agent", "source": "github" },
+  "version": "1.0.0",
+  "icons": [{ "src": "https://www.cueedit.io/icon-256.png", "mimeType": "image/png", "sizes": ["256x256"] }],
+  "remotes": [
+    { "type": "streamable-http", "url": "https://www.cueedit.io/api/mcp/mcp" }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "name": "cueedit",
+  "version": "1.0.0",
+  "description": "Let your AI agent run your Instagram and Facebook Pages: schedule reels, reply to comments, DM everyone who comments LINK, and run comment-to-DM Auto DM rules.",
+  "author": { "name": "IndianAppGuy", "url": "https://www.cueedit.io" },
+  "homepage": "https://www.cueedit.io/?ref=claude-code",
+  "repository": "https://github.com/IndianAppGuy/cueedit-agent",
+  "license": "MIT",
+  "keywords": ["instagram", "facebook", "reels", "auto-dm", "comments", "manychat", "social-media"]
+}

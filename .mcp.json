@@ -1,0 +1,5 @@
+{
+  "mcpServers": {
+    "cueedit": { "type": "http", "url": "https://www.cueedit.io/api/mcp/mcp" }
+  }
+}
